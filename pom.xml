@@ -14,7 +14,7 @@
         <module>test-service-provider</module>
         <module>test-service-consumer</module>
         <module>test-service-api</module>
-        <module>test-service-api</module>
+        <module>test-netty</module>
     </modules>
 
     <name>simple-rpc</name>

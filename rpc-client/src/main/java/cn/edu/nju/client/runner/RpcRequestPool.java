@@ -7,12 +7,12 @@ import io.netty.util.concurrent.Promise;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by thpffcj on 2019/12/14.
+ *
+ * 为了保证一定的请求并发，所以对服务调用请求进行了池化管理，这样可以等到消息返回再进行处理，不需要阻塞等待
  */
 @Component
 public class RpcRequestPool {
@@ -40,6 +40,15 @@ public class RpcRequestPool {
         RpcResponse rpcResponse = promise.get(10, TimeUnit.SECONDS);
         requestPool.remove(requestId);
 
+        RpcRequestManager.destroyChannelHolder(requestId);
+
         return rpcResponse;
+    }
+
+    public void notifyRequest(String requestId, RpcResponse rpcResponse) {
+        Promise<RpcResponse> promise = requestPool.get(requestId);
+        if (promise != null) {
+            promise.setSuccess(rpcResponse);
+        }
     }
 }

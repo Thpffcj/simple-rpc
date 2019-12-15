@@ -9,7 +9,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 /**
  * Created by thpffcj on 2019/12/14.
  */
-public class ZnsServerEncodeHandler extends MessageToByteEncoder<RpcResponse> {
+public class RpcServerEncodeHandler extends MessageToByteEncoder<RpcResponse> {
 
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, RpcResponse rpcResponse, ByteBuf byteBuf) throws Exception {

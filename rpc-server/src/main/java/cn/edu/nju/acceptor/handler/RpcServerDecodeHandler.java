@@ -11,17 +11,22 @@ import java.util.List;
 /**
  * Created by thpffcj on 2019/12/14.
  */
-public class ZnsServerDecodeHandler extends ByteToMessageDecoder {
+public class RpcServerDecodeHandler extends ByteToMessageDecoder {
+
+    private static final int HEAD_LENGTH = 4;
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
 
-        if (byteBuf.readableBytes() <= 4) {
+        if (byteBuf.readableBytes() <= HEAD_LENGTH) {
             return;
         }
 
-        int length = byteBuf.readInt();
+        // TODO 我们标记一下当前的readIndex的位置
         byteBuf.markReaderIndex();
+        int length = byteBuf.readInt();
+
+        // 读到的消息体长度如果小于我们传送过来的消息长度，则resetReaderIndex
         if (byteBuf.readableBytes() < length) {
             byteBuf.resetReaderIndex();
         } else {

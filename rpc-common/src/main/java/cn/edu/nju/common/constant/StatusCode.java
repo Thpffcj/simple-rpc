@@ -1,8 +1,11 @@
 package cn.edu.nju.common.constant;
 
+import lombok.Getter;
+
 /**
  * Created by thpffcj on 2019/12/13.
  */
+@Getter
 public enum StatusCode {
 
     SUCCESS(200, "OK"),
