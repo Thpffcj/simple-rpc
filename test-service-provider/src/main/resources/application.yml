@@ -6,7 +6,7 @@ spring:
   application:
     name: zns-service-provider
 
-zns:
+rpc:
   server:
       zk:
         root: /zns

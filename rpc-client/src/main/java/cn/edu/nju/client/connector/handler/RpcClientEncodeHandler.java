@@ -12,7 +12,8 @@ import io.netty.handler.codec.MessageToByteEncoder;
 public class RpcClientEncodeHandler extends MessageToByteEncoder<RpcRequest> {
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, RpcRequest rpcRequest, ByteBuf byteBuf) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext,
+                          RpcRequest rpcRequest, ByteBuf byteBuf) throws Exception {
 
         byte[] bytes = SerializationUtil.serialize(rpcRequest);
         byteBuf.writeInt(bytes.length);
