@@ -1,4 +1,4 @@
-package cn.edu.nju.config;
+package cn.edu.nju.server.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

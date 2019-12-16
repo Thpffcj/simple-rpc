@@ -1,8 +1,8 @@
-package cn.edu.nju.acceptor;
+package cn.edu.nju.server.acceptor;
 
-import cn.edu.nju.acceptor.init.RpcServerInitializer;
-import cn.edu.nju.config.RpcServerConfiguration;
-import cn.edu.nju.util.SpringBeanFactory;
+import cn.edu.nju.server.acceptor.init.RpcServerInitializer;
+import cn.edu.nju.server.config.RpcServerConfiguration;
+import cn.edu.nju.server.util.SpringBeanFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Created by thpffcj on 2019/12/15.
+ *
+ * 当Server端启动后，将同时启动一个Acceptor长连接线程，用于接收外部服务调用请求。内部包含了编解码以及反射调用本地服务机制。
  */
 public class RpcServerAcceptor implements Runnable {
 

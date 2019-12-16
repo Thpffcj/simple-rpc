@@ -1,8 +1,8 @@
-package cn.edu.nju.acceptor.handler;
+package cn.edu.nju.server.acceptor.handler;
 
 import cn.edu.nju.common.bean.RpcRequest;
 import cn.edu.nju.common.bean.RpcResponse;
-import cn.edu.nju.util.SpringBeanFactory;
+import cn.edu.nju.server.util.SpringBeanFactory;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -53,7 +53,7 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<RpcRequest> {
             rpcResponse.setCause(cause);
         }
 
-        // 把响应刷到客户端
+        // TODO 把响应刷到客户端
         ctx.writeAndFlush(rpcResponse);
     }
 }

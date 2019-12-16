@@ -16,6 +16,9 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by thpffcj on 2019/12/15.
+ *
+ * 当Client端发起一个远程服务调用时，ZnsRequestManager将会启动一个Connector与Acceptor进行连接，同时会保存通道信
+ * 息ChannelHolder到内部，直到请求完成，再进行通道信息销毁。
  */
 public class RpcClientConnector implements Runnable {
 

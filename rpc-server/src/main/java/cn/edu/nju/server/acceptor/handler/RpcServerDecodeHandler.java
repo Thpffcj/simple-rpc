@@ -1,4 +1,4 @@
-package cn.edu.nju.acceptor.handler;
+package cn.edu.nju.server.acceptor.handler;
 
 import cn.edu.nju.common.bean.RpcRequest;
 import cn.edu.nju.common.util.SerializationUtil;
@@ -34,6 +34,7 @@ public class RpcServerDecodeHandler extends ByteToMessageDecoder {
             byteBuf.readBytes(bytes);
 
             RpcRequest rpcRequest = SerializationUtil.deserialize(bytes, RpcRequest.class);
+            // 加入到解码列表list中
             list.add(rpcRequest);
         }
     }

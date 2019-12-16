@@ -1,4 +1,4 @@
-package cn.edu.nju.util;
+package cn.edu.nju.server.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

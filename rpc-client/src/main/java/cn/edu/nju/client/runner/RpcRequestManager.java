@@ -1,6 +1,7 @@
 package cn.edu.nju.client.runner;
 
 import cn.edu.nju.client.bean.ChannelHolder;
+import cn.edu.nju.client.config.RpcClientConfiguration;
 import cn.edu.nju.client.util.SpringBeanFactory;
 import cn.edu.nju.common.bean.RpcRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,9 @@ import java.util.concurrent.*;
 
 /**
  * Created by thpffcj on 2019/12/14.
+ *
+ * 当Client端发起一个远程服务调用时，ZnsRequestManager将会启动一个Connector与Acceptor进行连接，同时会保存通道信息
+ * ChannelHolder到内部，直到请求完成，再进行通道信息销毁。
  *
  * TODO
  */
@@ -35,11 +39,14 @@ public class RpcRequestManager {
 //    private static ServiceRouteCache SERVICE_ROUTE_CACHE;
     private static String CLUSTER_STRATEGY;
 
-//    public static void startZnsRequestManager(RpcRequestPool rpcRequestPool, ServiceRouteCache serviceRouteCache) {
-//        RPC_REQUEST_POOL = rpcRequestPool;
-//        SERVICE_ROUTE_CACHE = serviceRouteCache;
-//        CLUSTER_STRATEGY = SpringBeanFactory.getBean(RpcClientConfiguration.class).getZnsClientClusterStrategy();
-//    }
+    /**
+     *
+     * @param rpcRequestPool
+     */
+    public static void startRpcRequestManager(RpcRequestPool rpcRequestPool) {
+        RPC_REQUEST_POOL = rpcRequestPool;
+        CLUSTER_STRATEGY = SpringBeanFactory.getBean(RpcClientConfiguration.class).getZnsClientClusterStrategy();
+    }
 
     public static void sendRequest(RpcRequest rpcRequest) {
 

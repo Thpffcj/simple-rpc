@@ -1,8 +1,8 @@
-package cn.edu.nju.acceptor.init;
+package cn.edu.nju.server.acceptor.init;
 
-import cn.edu.nju.acceptor.handler.RpcRequestHandler;
-import cn.edu.nju.acceptor.handler.RpcServerDecodeHandler;
-import cn.edu.nju.acceptor.handler.RpcServerEncodeHandler;
+import cn.edu.nju.server.acceptor.handler.RpcRequestHandler;
+import cn.edu.nju.server.acceptor.handler.RpcServerDecodeHandler;
+import cn.edu.nju.server.acceptor.handler.RpcServerEncodeHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
