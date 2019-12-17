@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
     <!-- 要使用springProperty属性，logback配置文件需要命名为logback-spring.xml -->
     <springProperty scope="local" name="LOG_LEVEL" source="logback.level" defaultValue="INFO" />
     <springProperty scope="local" name="LOG_PATH" source="logback.path" defaultValue="/Users/thpffcj/Public/file/zns" />
-    <contextName>zns-service-consumer</contextName>
+    <contextName>rpc-service-consumer</contextName>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">

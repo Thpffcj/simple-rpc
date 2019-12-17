@@ -3,6 +3,7 @@ package cn.edu.nju.client.connector;
 import cn.edu.nju.client.bean.ChannelHolder;
 import cn.edu.nju.client.bean.ProviderService;
 import cn.edu.nju.client.connector.init.RpcClientInitializer;
+import cn.edu.nju.client.runner.RpcRequestManager;
 import cn.edu.nju.client.util.SpringBeanFactory;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -73,7 +74,8 @@ public class RpcClientConnector implements Runnable {
                         .eventLoopGroup(worker)
                         .build();
 
-
+                // 注册ChannelHolder
+                RpcRequestManager.registerChannelHolder(requestId, channelHolder);
 
                 LOGGER.info("Construct a connector with service provider[{}:{}] successfully",
                         providerService.getServerIp(),

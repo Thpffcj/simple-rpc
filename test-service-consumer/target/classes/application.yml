@@ -1,19 +1,18 @@
-
 logging:
   config: classpath:logback-spring.xml
 server:
   port: 8081
 spring:
   application:
-    name: zns-service-consumer
+    name: rpc-service-consumer
 
-zns:
+rpc:
   client:
       zk:
-        root: /zns
+        root: /rpc
         addr: localhost:2181
         switch: true
       api:
-        package: com.buildupchao.zns.service.api
+        package: cn.edu.nju.service.api
   cluster:
-        strategy: Polling
+        strategy: Random

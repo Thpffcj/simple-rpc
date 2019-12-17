@@ -4,6 +4,8 @@ import cn.edu.nju.common.bean.RpcResponse;
 import io.netty.util.concurrent.DefaultPromise;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Promise;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,6 +19,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RpcRequestPool {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcRequestPool.class);
+
     /**
      * Netty中所有的IO操作都是异步的，所有的IO调用会立即返回，但是并不保证调用结束时该IO请求已经完成。而调用后立即返回
      * 的对象在Netty中就是一个ChannelFuture。
@@ -27,6 +31,11 @@ public class RpcRequestPool {
      */
     private final ConcurrentHashMap<String, Promise<RpcResponse>> requestPool = new ConcurrentHashMap<>();
 
+    /**
+     * 提交请求
+     * @param requestId
+     * @param executor
+     */
     public void submitRequest(String requestId, EventExecutor executor) {
         requestPool.put(requestId, new DefaultPromise<>(executor));
     }
@@ -40,12 +49,14 @@ public class RpcRequestPool {
         RpcResponse rpcResponse = promise.get(10, TimeUnit.SECONDS);
         requestPool.remove(requestId);
 
+        // 保存通道信息ChannelHolder到内部，直到请求完成，再进行通道信息销毁。
         RpcRequestManager.destroyChannelHolder(requestId);
 
         return rpcResponse;
     }
 
     public void notifyRequest(String requestId, RpcResponse rpcResponse) {
+        LOGGER.info("notifyRequest accept requestId is [{}] ", requestId);
         Promise<RpcResponse> promise = requestPool.get(requestId);
         if (promise != null) {
             promise.setSuccess(rpcResponse);

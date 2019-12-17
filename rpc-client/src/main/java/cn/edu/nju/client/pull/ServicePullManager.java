@@ -2,6 +2,7 @@ package cn.edu.nju.client.pull;
 
 import cn.edu.nju.api.annotation.RpcClient;
 import cn.edu.nju.client.bean.ProviderService;
+import cn.edu.nju.client.cache.ServiceRouteCache;
 import cn.edu.nju.client.config.RpcClientConfiguration;
 import cn.edu.nju.client.util.ZKUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -29,6 +30,9 @@ public class ServicePullManager {
     private ZKUtil zkUtil;
 
     @Autowired
+    private ServiceRouteCache serviceRouteCache;
+
+    @Autowired
     private RpcClientConfiguration rpcClientConfiguration;
 
     /**
@@ -36,7 +40,7 @@ public class ServicePullManager {
      */
     public void pullServiceFromZK() {
 
-        Reflections reflections = new Reflections(rpcClientConfiguration.getZnsClientApiPackage());
+        Reflections reflections = new Reflections(rpcClientConfiguration.getRpcClientApiPackage());
         // 获得接口
         Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(RpcClient.class);
         if (CollectionUtils.isEmpty(typesAnnotatedWith)) {
@@ -48,8 +52,8 @@ public class ServicePullManager {
             String serviceName = cls.getName();
 
             // 将服务提供列表缓存到本地
-//            List<ProviderService> providerServices = zkUtil.getServiceInfos(serviceName);
-//            serviceRouteCache.addCache(serviceName, providerServices);
+            List<ProviderService> providerServices = zkUtil.getServiceInfos(serviceName);
+            serviceRouteCache.addCache(serviceName, providerServices);
 
             // 监听服务节点
             zkUtil.subscribeZKEvent(serviceName);

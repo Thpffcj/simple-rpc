@@ -6,7 +6,7 @@
 
 - 为什么要RPC，RPC是指远程过程调用，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据
 
-![]()
+![](https://raw.githubusercontent.com/Thpffcj/simple-rpc/master/pic/RPC%E6%A1%86%E6%9E%B6.jpg)
 
 1. Client以本地调用的方式调用服务
 2. Client Stub接收到调用后，把服务调用相关信息组装成需要网络传输的消息体，并找到服务地址（host:port），对消息进行编码后交给Connector进行发送

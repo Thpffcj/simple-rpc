@@ -11,18 +11,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class RpcClientConfiguration {
 
-    @Value("${zns.client.zk.root}")
+    @Value("${rpc.client.zk.root}")
     private String zkRoot;
 
-    @Value("${zns.client.zk.addr}")
+    @Value("${rpc.client.zk.addr}")
     private String zkAddr;
 
     @Value("${server.port}")
-    private String znsClientPort;
+    private String rpcClientPort;
 
-    @Value("${zns.client.api.package}")
-    private String znsClientApiPackage;
+    @Value("${rpc.client.api.package}")
+    private String rpcClientApiPackage;
 
-    @Value("${zns.cluster.strategy}")
-    private String znsClientClusterStrategy;
+    @Value("${rpc.cluster.strategy}")
+    private String rpcClientClusterStrategy;
 }

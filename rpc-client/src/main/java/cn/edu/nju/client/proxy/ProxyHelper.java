@@ -4,6 +4,7 @@ import cn.edu.nju.client.runner.RpcRequestManager;
 import cn.edu.nju.client.runner.RpcRequestPool;
 import cn.edu.nju.client.util.RequestIdUtil;
 import cn.edu.nju.common.bean.RpcRequest;
+import cn.edu.nju.common.bean.RpcResponse;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -25,6 +26,13 @@ import java.lang.reflect.Method;
  * class，也能够代理接口。Enhancer创建一个被代理对象的子类并且拦截所有的方法调用（包括从Object中继承的toString和hashCode方法）。
  * Enhancer不能够拦截final方法，例如Object.getClass()方法，这是由于Java final方法语义决定的。基于同样的道理，Enhancer也不
  * 能对fianl类进行代理操作。这也是Hibernate为什么不能持久化final class的原因。
+ *
+ * 使用过程：
+ * 1. 生成一个代理对象
+ * 2. 告诉代理对象，它的实现在哪里
+ * 3. 告诉代理对象，它的父类是谁
+ * 4. 生成代理类的对象
+ * 5. 调用代理对象的方法
  */
 @Component
 public class ProxyHelper {
@@ -32,9 +40,18 @@ public class ProxyHelper {
     @Autowired
     private RpcRequestPool rpcRequestPool;
 
+    /**
+     * 返回创建的代理对象
+     * @param cls
+     * @param <T>
+     * @return
+     */
     public <T> T newProxyInstance(Class<T> cls) {
+        // 通过cglib动态代理获取代理对象的过程
         Enhancer enhancer = new Enhancer();
+        // 设置enhancer对象的父类
         enhancer.setSuperclass(cls);
+        // 设置enhancer对应的实现对象(回调对象)
         enhancer.setCallback(new ProxyCallBackHandler());
         return (T) enhancer.create();
     }
@@ -42,16 +59,18 @@ public class ProxyHelper {
     class ProxyCallBackHandler implements MethodInterceptor {
 
         @Override
-        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy)
+                throws Throwable {
             return doIntercept(method, objects);
         }
 
-        private Object doIntercept(Method method, Object[] parameters) {
+        private Object doIntercept(Method method, Object[] parameters) throws Throwable {
             String requestId = RequestIdUtil.requestId();
             String className = method.getDeclaringClass().getName();
             String methodName = method.getName();
             Class<?>[] parameterTypes = method.getParameterTypes();
 
+            // 构造rpcRequest
             RpcRequest rpcRequest = RpcRequest.builder()
                     .requestId(requestId)
                     .className(className)
@@ -60,8 +79,17 @@ public class ProxyHelper {
                     .parameters(parameters)
                     .build();
 
+            RpcRequestManager.sendRequest(rpcRequest);
+            RpcResponse rpcResponse = rpcRequestPool.fetchResponse(requestId);
 
-            return null;
+            if (rpcResponse == null) {
+                return null;
+            }
+
+            if (rpcResponse.isError()) {
+                throw rpcResponse.getCause();
+            }
+            return rpcResponse.getResult();
         }
     }
 }
