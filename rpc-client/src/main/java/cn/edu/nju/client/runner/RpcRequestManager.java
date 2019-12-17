@@ -1,6 +1,7 @@
 package cn.edu.nju.client.runner;
 
 import cn.edu.nju.client.bean.ChannelHolder;
+import cn.edu.nju.client.cache.ServiceRouteCache;
 import cn.edu.nju.client.config.RpcClientConfiguration;
 import cn.edu.nju.client.util.SpringBeanFactory;
 import cn.edu.nju.common.bean.RpcRequest;
@@ -36,18 +37,19 @@ public class RpcRequestManager {
     );
 
     private static RpcRequestPool RPC_REQUEST_POOL;
-//    private static ServiceRouteCache SERVICE_ROUTE_CACHE;
+    private static ServiceRouteCache SERVICE_ROUTE_CACHE;
     private static String CLUSTER_STRATEGY;
 
-    /**
-     *
-     * @param rpcRequestPool
-     */
-    public static void startRpcRequestManager(RpcRequestPool rpcRequestPool) {
+    public static void startRpcRequestManager(RpcRequestPool rpcRequestPool, ServiceRouteCache serviceRouteCache) {
         RPC_REQUEST_POOL = rpcRequestPool;
+        SERVICE_ROUTE_CACHE = serviceRouteCache;
         CLUSTER_STRATEGY = SpringBeanFactory.getBean(RpcClientConfiguration.class).getZnsClientClusterStrategy();
     }
 
+    /**
+     * 发送消息
+     * @param rpcRequest
+     */
     public static void sendRequest(RpcRequest rpcRequest) {
 
     }

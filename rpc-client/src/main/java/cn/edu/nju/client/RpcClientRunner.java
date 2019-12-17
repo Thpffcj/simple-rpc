@@ -1,5 +1,6 @@
 package cn.edu.nju.client;
 
+import cn.edu.nju.client.pull.ServicePullManager;
 import cn.edu.nju.client.runner.RpcRequestManager;
 import cn.edu.nju.client.runner.RpcRequestPool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,19 @@ import org.springframework.stereotype.Component;
 public class RpcClientRunner {
 
     @Autowired
+    private ServicePullManager servicePullManager;
+
+    @Autowired
     private RpcRequestPool rpcRequestPool;
 
     public void run() {
 
+        // 启动请求管理器
         RpcRequestManager.startRpcRequestManager(rpcRequestPool);
+
+        // 从Zookeeper拉取服务提供者信息
+        servicePullManager.pullServiceFromZK();
+
+
     }
 }

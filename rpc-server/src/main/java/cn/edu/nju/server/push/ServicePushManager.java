@@ -35,6 +35,7 @@ public class ServicePushManager {
      */
     public void registerIntoZK() {
 
+        // 获取到所有拥有特定注解的beans集合
         Map<String, Object> beanWithAnnotations =
                 SpringBeanFactory.getBeanListByAnnotationClass(RpcService.class);
 
@@ -42,10 +43,13 @@ public class ServicePushManager {
             return;
         }
 
+        // 创建根节点
         zkUtil.createRootNode();
 
         for (Object bean : beanWithAnnotations.values()) {
+            // 返回该元素的注解在此元素的指定注释类型（如果存在），否则返回null
             RpcService rpcService = bean.getClass().getAnnotation(RpcService.class);
+            // @RpcService(cls = ChatService.class)
             String serviceName = rpcService.cls().getName();
             pushServiceInfoIntoZK(serviceName);
         }
@@ -58,6 +62,7 @@ public class ServicePushManager {
      */
     private void pushServiceInfoIntoZK(String serviceName) {
 
+        // ChatService
         zkUtil.createPersistentNode(serviceName);
 
         // 172.19.142.63:8082:8888
@@ -66,9 +71,9 @@ public class ServicePushManager {
                 + ":" + rpcServerConfiguration.getNetworkPort();
         String serviceAddressPath = serviceName + "/" + serviceAddress;
 
+        // ChatService/172.19.142.63:8082:8888
         zkUtil.createPersistentNode(serviceAddressPath);
 
         LOGGER.info("Register service[{}] into zookeeper successfully", serviceAddressPath);
     }
-
 }

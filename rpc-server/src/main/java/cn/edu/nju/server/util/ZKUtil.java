@@ -17,6 +17,9 @@ public class ZKUtil {
     @Autowired
     private RpcServerConfiguration rpcServerConfiguration;
 
+    /**
+     * 创建根节点
+     */
     public void createRootNode() {
         boolean exists = zkClient.exists(rpcServerConfiguration.getZkRoot());
         if (!exists) {
@@ -24,6 +27,10 @@ public class ZKUtil {
         }
     }
 
+    /**
+     * 创建持久节点
+     * @param path
+     */
     public void createPersistentNode(String path) {
         String pathName = rpcServerConfiguration.getZkRoot() + "/" + path;
         boolean exists = zkClient.exists(pathName);
