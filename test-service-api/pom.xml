@@ -16,8 +16,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.buildupchao</groupId>
-            <artifactId>zns-api</artifactId>
+            <groupId>cn.edu.nju</groupId>
+            <artifactId>rpc-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

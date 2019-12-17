@@ -1,11 +1,11 @@
 package cn.edu.nju.service.api;
 
-import com.buildupchao.zns.api.annotation.ZnsClient;
+import cn.edu.nju.api.annotation.RpcClient;
 
 /**
  * Created by thpffcj on 2019/12/13.
  */
-@ZnsClient
+@RpcClient
 public interface ChatService {
 
     String send();
