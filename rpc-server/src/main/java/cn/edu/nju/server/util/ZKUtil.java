@@ -39,6 +39,10 @@ public class ZKUtil {
         }
     }
 
+    /**
+     * 创建临时节点
+     * @param path
+     */
     public void createNode(String path) {
         String pathName = rpcServerConfiguration.getZkRoot() + "/" + path;
         boolean exists = zkClient.exists(pathName);

@@ -4,7 +4,6 @@
     <springProperty scope="local" name="LOG_LEVEL" source="logback.level" defaultValue="INFO" />
     <springProperty scope="local" name="LOG_PATH" source="logback.path" defaultValue="/Users/thpffcj/Public/file/zns" />
     <contextName>rpc-service-consumer</contextName>
-
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${LOG_LEVEL}</level>

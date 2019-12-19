@@ -2,7 +2,7 @@ package cn.edu.nju.client.cluster.engine;
 
 import cn.edu.nju.client.cluster.ClusterStrategy;
 import cn.edu.nju.client.cluster.ClusterStrategyEnum;
-import cn.edu.nju.client.cluster.impl.RandomClusterStrategyImpl;
+import cn.edu.nju.client.cluster.impl.*;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
@@ -16,10 +16,10 @@ public class ClusterEngine {
 
     static {
         clusterStrategyMap.put(ClusterStrategyEnum.RANDOM, new RandomClusterStrategyImpl());
-//        clusterStrategyMap.put(ClusterStrategyEnum.WEIGHT_RANDOM, new WeightRandomClusterStrategyImpl());
-//        clusterStrategyMap.put(ClusterStrategyEnum.POLLING, new PollingClusterStrategyImpl());
-//        clusterStrategyMap.put(ClusterStrategyEnum.WEIGHT_POLLING, new WeightPollingClusterStrategyImpl());
-//        clusterStrategyMap.put(ClusterStrategyEnum.HASH, new HashClusterStrategyImpl());
+        clusterStrategyMap.put(ClusterStrategyEnum.WEIGHT_RANDOM, new WeightRandomClusterStrategyImpl());
+        clusterStrategyMap.put(ClusterStrategyEnum.POLLING, new PollingClusterStrategyImpl());
+        clusterStrategyMap.put(ClusterStrategyEnum.WEIGHT_POLLING, new WeightPollingClusterStrategyImpl());
+        clusterStrategyMap.put(ClusterStrategyEnum.HASH, new HashClusterStrategyImpl());
     }
 
     /**

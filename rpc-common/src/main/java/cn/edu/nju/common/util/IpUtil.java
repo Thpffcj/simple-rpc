@@ -69,8 +69,8 @@ public class IpUtil {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(IpUtil.getHostAddress());
-        System.out.println(IpUtil.getRealIp());
-    }
+//    public static void main(String[] args) {
+//        System.out.println(IpUtil.getHostAddress());
+//        System.out.println(IpUtil.getRealIp());
+//    }
 }
