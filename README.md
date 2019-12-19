@@ -47,8 +47,8 @@
 
 ### 2. Netty
 
-[《跟闪电侠学Netty》开篇：Netty是什么？](https://www.jianshu.com/p/a4e03835921a)
-[新手入门：目前为止最透彻的的Netty高性能原理和框架架构解析](https://www.cnblogs.com/imstudy/p/9908791.html)
+- [《跟闪电侠学Netty》开篇：Netty是什么？](https://www.jianshu.com/p/a4e03835921a)
+- [新手入门：目前为止最透彻的的Netty高性能原理和框架架构解析](https://www.cnblogs.com/imstudy/p/9908791.html)
 
 ### 3. 技术选型
 
@@ -85,146 +85,154 @@
 
 - 添加rpc-server依赖包
 
+```
+<dependency>
+    <groupId>cn.edu.nju</groupId>
+    <artifactId>test-service-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
 
-    <dependency>
-        <groupId>cn.edu.nju</groupId>
-        <artifactId>test-service-api</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-        <groupId>cn.edu.nju</groupId>
-        <artifactId>rpc-server</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <exclusions>
-            <exclusion>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
+<dependency>
+    <groupId>cn.edu.nju</groupId>
+    <artifactId>rpc-server</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
 
 - 添加扫描包路径RpcServerPackage.class以及启动调用方法rpcServerRunner.run()
 
+```
+@ComponentScan(
+        basePackages = "cn.edu.nju.service.provider",
+        basePackageClasses = RpcServerPackage.class
+)
+@SpringBootApplication
+public class RpcServiceProviderApplication implements ApplicationRunner {
 
-    @ComponentScan(
-            basePackages = "cn.edu.nju.service.provider",
-            basePackageClasses = RpcServerPackage.class
-    )
-    @SpringBootApplication
-    public class RpcServiceProviderApplication implements ApplicationRunner {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcServiceProviderApplication.class);
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(RpcServiceProviderApplication.class);
+    @Autowired
+    private RpcServerRunner rpcServerRunner;
 
-        @Autowired
-        private RpcServerRunner rpcServerRunner;
-
-        public static void main(String[] args) {
-            SpringApplication.run(RpcServiceProviderApplication.class, args);
-            LOGGER.info("Rpc service provider application startup successfully");
-        }
-
-        @Override
-        public void run(ApplicationArguments applicationArguments) throws Exception {
-            rpcServerRunner.run();
-        }
+    public static void main(String[] args) {
+        SpringApplication.run(RpcServiceProviderApplication.class, args);
+        LOGGER.info("Rpc service provider application startup successfully");
     }
+
+    @Override
+    public void run(ApplicationArguments applicationArguments) throws Exception {
+        rpcServerRunner.run();
+    }
+}
+```
 
 - 在application.yml中配置属性
 
+```
+logging:
+  config: classpath:logback-spring.xml
+server:
+  port: 8082
+spring:
+  application:
+    name: rpc-service-provider
 
-    logging:
-      config: classpath:logback-spring.xml
-    server:
-      port: 8082
-    spring:
-      application:
-        name: rpc-service-provider
-
-    rpc:
-      server:
-          zk:
-            root: /rpc
-            addr: localhost:2181
-            switch: true
-      network:
-          port: 8888
+rpc:
+  server:
+      zk:
+        root: /rpc
+        addr: localhost:2181
+        switch: true
+  network:
+      port: 8888
+```
 
 ### 2. 服务调用者
 
 - 添加rpc-client依赖包
 
+```
+<dependency>
+    <groupId>cn.edu.nju</groupId>
+    <artifactId>test-service-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
 
-    <dependency>
-        <groupId>cn.edu.nju</groupId>
-        <artifactId>test-service-api</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-        <groupId>cn.edu.nju</groupId>
-        <artifactId>rpc-client</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <exclusions>
-            <exclusion>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
+<dependency>
+    <groupId>cn.edu.nju</groupId>
+    <artifactId>rpc-client</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
 
 - 添加扫描包路径RpcClientPackage.class以及启动调用方法rpcClientRunnerr.run()
 
+```
+@ComponentScan(
+        basePackages = "cn.edu.nju.service.consumer",
+        basePackageClasses = RpcClientPackage.class
+)
+@SpringBootApplication
+public class RpcServiceConsumerApplication implements ApplicationRunner {
 
-    @ComponentScan(
-            basePackages = "cn.edu.nju.service.consumer",
-            basePackageClasses = RpcClientPackage.class
-    )
-    @SpringBootApplication
-    public class RpcServiceConsumerApplication implements ApplicationRunner {
+    @Autowired
+    private RpcClientRunner rpcClientRunner;
 
-        @Autowired
-        private RpcClientRunner rpcClientRunner;
-
-        public static void main(String[] args) {
-            SpringApplication.run(RpcServiceConsumerApplication.class, args);
-        }
-
-        @Override
-        public void run(ApplicationArguments applicationArguments) throws Exception {
-            rpcClientRunner.run();
-        }
+    public static void main(String[] args) {
+        SpringApplication.run(RpcServiceConsumerApplication.class, args);
     }
+
+    @Override
+    public void run(ApplicationArguments applicationArguments) throws Exception {
+        rpcClientRunner.run();
+    }
+}
+```
 
 - 在application.yml中配置属性
 
+```
+logging:
+  config: classpath:logback-spring.xml
+server:
+  port: 8081
+spring:
+  application:
+    name: rpc-service-consumer
 
-    logging:
-      config: classpath:logback-spring.xml
-    server:
-      port: 8081
-    spring:
-      application:
-        name: rpc-service-consumer
-
-    rpc:
-      client:
-          zk:
-            root: /rpc
-            addr: 172.19.240.128:2181
-            switch: true
-          api:
-            package: cn.edu.nju.service.api
-      cluster:
-            strategy: Random
+rpc:
+  client:
+      zk:
+        root: /rpc
+        addr: 172.19.240.128:2181
+        switch: true
+      api:
+        package: cn.edu.nju.service.api
+  cluster:
+        strategy: Random
+```
 
 ### 3. 公共API test-service-api需要引入rpc-api包依赖
 
-    <dependency>
-        <groupId>cn.edu.nju</groupId>
-        <artifactId>rpc-api</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
+```
+<dependency>
+    <groupId>cn.edu.nju</groupId>
+    <artifactId>rpc-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
 
 
 ## 4. 参考
