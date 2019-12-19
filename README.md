@@ -237,10 +237,10 @@ rpc:
 
 ## 4. 参考
 
-[设计一个分布式RPC框架](http://www.buildupchao.cn/arch/2019/02/01/design-a-distributed-RPC-structure.html)
-[结合Zookeeper实现简易RPC框架](https://www.jianshu.com/p/f684ef537ede)
-[谈谈如何使用Netty开发实现高性能的RPC服务器](https://www.cnblogs.com/jietang/p/5615681.html)
-[一个轻量级分布式RPC框架--NettyRpc](https://www.cnblogs.com/luxiaoxun/p/5272384.html)
+- [设计一个分布式RPC框架](http://www.buildupchao.cn/arch/2019/02/01/design-a-distributed-RPC-structure.html)
+- [结合Zookeeper实现简易RPC框架](https://www.jianshu.com/p/f684ef537ede)
+- [谈谈如何使用Netty开发实现高性能的RPC服务器](https://www.cnblogs.com/jietang/p/5615681.html)
+- [一个轻量级分布式RPC框架--NettyRpc](https://www.cnblogs.com/luxiaoxun/p/5272384.html)
 
 
 
